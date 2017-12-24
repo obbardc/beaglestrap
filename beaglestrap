@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+#
+# This script will strap your beagle.
+#
+# It does not work or do anything interesting. Yet.
+#
+#
+
+. ./functions.sh
+
+CWD=`pwd`
+BUILDENV="$CWD/tmp"
+ROOTSIZE="1500"
+BOOTSIZE="64"
+IMAGE="$CWD/out.img"
+ROOTFS="$BUILDENV/rootfs"
+
+# check root is running
+if [ $EUID -ne 0 ]; then
+    error "you must run as root"
+    exit 1
+fi
+
+# purge old build env
+rm -rf $BUILDENV
+mkdir -p $BUILDENV
+
+# create blank image $ROOTSIZE blocks long
+info "creating blank image $IMAGE"
+dd if=/dev/zero of=$IMAGE bs=1MiB count=$ROOTSIZE >& /dev/null
+
+# install bootloader
+info "installing bootloader"
+#dd conv=notrunc if=$CWD/tmp_kernel/u-boot/u-boot-sunxi-with-spl.bin of=$IMAGE bs=8k seek=1 >& /dev/null
+dd conv=notrunc if=~/projects/oldenburg/u-boot/MLO of=$IMAGE count=1 seek=1 bs=128k >& /dev/null
+dd conv=notrunc if=~/projects/oldenburg/u-boot/u-boot.img of=$IMAGE count=2 seek=1 bs=384k >& /dev/null
+
+# create partition table
+#
+#  first 2kb bootloader & partition table,
+#  next ${BOOTSIZE} mb FAT32,
+#  rest of disk rootfs
+info "creating filesystems"
+fdisk $IMAGE &>/dev/null << EOF
+n
+p
+1
+2048
++${BOOTSIZE}M
+t
+c
+n
+p
+2
+
+
+w
+EOF
+
+# create device map
+info "creating loop device"
+DEVICE=`kpartx -a -v $IMAGE | sed -E 's/.*(loop[0-9])p.*/\1/g' | head -1`
+sleep 1
+DEVICE_BOOTFS="/dev/mapper/${DEVICE}p1"
+DEVICE_ROOTFS="/dev/mapper/${DEVICE}p2"
+info "created loop device $DEVICE"
+
+# format
+info "formatting filesystems"
+mkfs.vfat $DEVICE_BOOTFS >& /dev/null
+mkfs.ext4 $DEVICE_ROOTFS >& /dev/null
+
+# mount
+info "mounting rootfs"
+mkdir -p $ROOTFS
+mount $DEVICE_ROOTFS $ROOTFS
+
+mkdir -p ${ROOTFS}/boot
+mount $DEVICE_BOOTFS ${ROOTFS}/boot
+
+# do evil things to the rootfs here
+
+# loop over all of the scripts
+for SHELL_SCRIPT in scripts/*.sh; do
+    info "Running $SHELL_SCRIPT"
+    . "$SHELL_SCRIPT"
+done
+
+# stop the doing evil things to the rootfs here
+
+# unmount
+info "unmounting rootfs"
+cd $CWD
+umount $DEVICE_BOOTFS
+umount $DEVICE_ROOTFS
+
+# remove the device maps
+info "removing loop devices"
+kpartx -d $IMAGE > /dev/null
+
+sleep 2
+
+
+# exit
+info "completed!"
+exit 0
