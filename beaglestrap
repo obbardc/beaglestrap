@@ -49,6 +49,8 @@ p
 +${BOOTSIZE}M
 t
 c
+a
+1
 n
 p
 2
