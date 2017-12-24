@@ -9,6 +9,10 @@ if [ ! -d "$LINUX_DIR" ]; then
 fi
 
 
+# copy uboot
+cp $UBOOT_DIR/MLO $ROOTFS/boot/
+cp $UBOOT_DIR/u-boot.img $ROOTFS/boot/
+
 # copy kernel & dtb
 cp $LINUX_DIR/arch/arm/boot/zImage $ROOTFS/boot/
 cp $LINUX_DIR/arch/arm/boot/dts/am335x-boneblack.dtb $ROOTFS/boot/
