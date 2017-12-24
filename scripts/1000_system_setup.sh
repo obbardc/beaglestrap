@@ -1,7 +1,7 @@
 . ./functions.sh
 
 # set hostname
-echo "beagle" > $ROOTFS/etc/hostname
+echo "beaglebone" > $ROOTFS/etc/hostname
 
 # set root password
 PASSWORD="toor"
