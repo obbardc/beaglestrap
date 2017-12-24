@@ -44,7 +44,7 @@ fdisk $IMAGE &>/dev/null << EOF
 n
 p
 1
-4M
+8192
 +${BOOTSIZE}M
 t
 c
