@@ -1,6 +1,6 @@
 . ./functions.sh
 
-LINUX_DIR="/home/chris/projects/oldenburg/linux"
+LINUX_DIR="/home/chris/projects/mainline/linux-stable"
 UBOOT_DIR="/home/chris/projects/oldenburg/u-boot"
 
 if [ ! -d "$LINUX_DIR" ]; then
@@ -35,7 +35,7 @@ load mmc 0:1 ${fdtaddr} am335x-boneblack.dtb
 # cmdline=coherent_pool=1M quiet cape_universal=disable capemgr.disable_partno=BB-BONELT-HDMI
 # console=ttyO0,115200n8 bone_capemgr.uboot_capemgr_enabled=1 root=/dev/mmcblk0p1 ro rootfstype=ext4 rootwait coherent_pool=1M net.ifnames=0 quiet
 
-setenv bootargs console=ttyO0,115200n8 noinitrd root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait fixrtc
+setenv bootargs console=ttyO0,115200n8 noinitrd root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait
 bootz ${loadaddr} - ${fdtaddr}
 EOF
 
