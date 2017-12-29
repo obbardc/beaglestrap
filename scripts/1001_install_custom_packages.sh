@@ -20,7 +20,6 @@ cp /home/chris/projects/oldenburg/bbb_audio_extension.alsactl.state $ROOTFS/home
 cp /home/chris/projects/oldenburg/bbb_audio_extension.alsactl.state $ROOTFS/root/bbb_audio_extension.alsactl.state
 
 # copy in compiled jack
-mkdir $ROOTFS/tmp/
 cp /home/chris/projects/oldenburg/jackd2/*.deb $ROOTFS/tmp/
 
 # install jackd2
@@ -28,11 +27,11 @@ cp /home/chris/projects/oldenburg/jackd2/*.deb $ROOTFS/tmp/
 echo "jackd2	jackd/tweak_rt_limits	boolean	true" > $ROOTFS/tmp/debconf_selections.conf
 chroot_exec debconf-set-selections /tmp/debconf_selections.conf
 rm $ROOTFS/tmp/debconf_selections.conf
-chroot_exec dpkg -i /tmp/libjack-jackd2-0_*_armhf.deb
+chroot_exec dpkg -i /tmp/libjack-jackd2-0_1.9.10+20150825git1ed50c92~dfsg-5_armhf.deb
 chroot_exec apt-get install -f
-chroot_exec dpkg -i /tmp/libjack-jackd2-dev_*_armhf.deb
+chroot_exec dpkg -i /tmp/libjack-jackd2-dev_1.9.10+20150825git1ed50c92~dfsg-5_armhf.deb
 chroot_exec apt-get install -f
-chroot_exec dpkg -i /tmp/jackd2_*_armhf.deb
+chroot_exec dpkg -i /tmp/jackd2_1.9.10+20150825git1ed50c92~dfsg-5_armhf.deb
 rm $ROOTFS/tmp/*.deb
 chroot_exec apt-get install -f
 chroot_exec apt-get clean
