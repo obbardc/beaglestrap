@@ -6,18 +6,21 @@ chroot_exec apt-get install mplayer --yes
 chroot_exec apt-get install sudo --yes
 
 # create jack user (p/w jack)
+USERNAME="jack"
 ENCRYPTED_PASSWORD=`mkpasswd -m sha-512 "jack"`
 
-chroot_exec adduser --disabled-password --gecos "" jack
-chroot_exec usermod -aG audio jack
-chroot_exec usermod -aG sudo jack
-chroot_exec usermod -p "${ENCRYPTED_PASSWORD}" jack
+chroot_exec adduser --gecos $USERNAME --add_extra_groups --disabled-password $USERNAME
+
+chroot_exec usermod -aG audio $USERNAME
+chroot_exec usermod -aG sudo $USERNAME
+chroot_exec usermod -p "${ENCRYPTED_PASSWORD}" $USERNAME
 
 # copy in soundcard settings
 cp /home/chris/projects/oldenburg/bbb_audio_extension.alsactl.state $ROOTFS/home/jack/bbb_audio_extension.alsactl.state
 cp /home/chris/projects/oldenburg/bbb_audio_extension.alsactl.state $ROOTFS/root/bbb_audio_extension.alsactl.state
 
 # copy in compiled jack
+mkdir $ROOTFS/tmp/
 cp /home/chris/projects/oldenburg/jackd2/*.deb $ROOTFS/tmp/
 
 # install jackd2
