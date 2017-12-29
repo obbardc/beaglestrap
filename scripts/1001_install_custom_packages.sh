@@ -10,6 +10,7 @@ ENCRYPTED_PASSWORD=`mkpasswd -m sha-512 "jack"`
 
 chroot_exec adduser --disabled-password --gecos "" jack
 chroot_exec usermod -aG audio jack
+chroot_exec usermod -aG sudo jack
 chroot_exec usermod -p "${ENCRYPTED_PASSWORD}" jack
 
 # copy in soundcard settings
