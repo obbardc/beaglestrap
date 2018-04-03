@@ -1,7 +1,14 @@
 . ./functions.sh
 
-# set hostname
-echo "beaglebone" > $ROOTFS/etc/hostname
+HOSTNAME=mahalia
+
+# hostname
+echo ${HOSTNAME} > $ROOTFS/etc/hostname
+
+# hosts file
+echo "127.0.0.1	localhost.localdomain	localhost
+127.0.1.1	${HOSTNAME}.localdomain	${HOSTNAME}" > $ROOTFS/etc/hosts
+
 
 # set root password
 PASSWORD="toor"
@@ -23,8 +30,8 @@ allow-hotplug eth0
 iface eth0 inet dhcp" >> $ROOTFS/etc/network/interfaces
 
 # setup apt
-echo "deb http://ftp.uk.debian.org/debian stretch main
-deb-src http://ftp.uk.debian.org/debian stretch main" > $ROOTFS/etc/apt/sources.list
+echo "deb http://ftp.uk.debian.org/debian stretch main contrib non-free
+deb-src http://ftp.uk.debian.org/debian stretch main contrib non-free" > $ROOTFS/etc/apt/sources.list
 
 # do not install recommended packages
 echo "APT::Install-Recommends \"0\";
@@ -32,6 +39,12 @@ APT::Install-Suggests \"0\";" > $ROOTFS/etc/apt/apt.conf.d/99no-install-recommen
 
 # update repo
 chroot_exec apt-get update
+
+# generate locales
+chroot_exec apt-get install locales --yes
+echo 'en_GB.UTF-8 UTF-8' > $ROOTFS/etc/locale.gen
+chroot_exec locale-gen
+# todo: save space: remove locale package after generating
 
 # install ssh server
 chroot_exec apt-get install openssh-server --yes

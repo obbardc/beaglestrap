@@ -1,6 +1,6 @@
 . ./functions.sh
 
-LINUX_DIR="/home/chris/projects/mainline/linux-stable"
+LINUX_DIR="/home/chris/projects/ti-linux-kernel"
 UBOOT_DIR="/home/chris/projects/oldenburg/u-boot"
 
 if [ ! -d "$LINUX_DIR" ]; then
@@ -16,24 +16,29 @@ cp $UBOOT_DIR/u-boot.img $ROOTFS/boot/
 # copy kernel & dtb
 cp $LINUX_DIR/arch/arm/boot/zImage $ROOTFS/boot/
 cp $LINUX_DIR/arch/arm/boot/dts/am335x-boneblack-audio-extension.dtb $ROOTFS/boot/
+cp $LINUX_DIR/arch/arm/boot/dts/am335x-boneblack-wireless-audio-extension.dtb $ROOTFS/boot/
 
 # copy kernel modues
 cp $LINUX_DIR/compiled_modules/* ${ROOTFS}/ -R
 
 # copy boot script
-
 cat <<'EOF' >> $ROOTFS/boot/boot.cmd
-echo "booting..."
-
-loadaddr=0x82000000
-fdtaddr=0x88000000
-rdaddr=0x88080000
-
 load mmc 0:1 ${loadaddr} zImage
-load mmc 0:1 ${fdtaddr} am335x-boneblack-audio-extension.dtb
+#load mmc 0:1 ${fdtaddr} am335x-boneblack-wireless.dtb
+
+if test $board_name = BBBW; then
+        # do bbbw stuff
+#       load mmc 0:1 ${fdtaddr} am335x-boneblack-wireless.dtb
+        load mmc 0:1 ${fdtaddr} am335x-boneblack-wireless-audio-extension.dtb
+else
+        # do bbb stuff
+#       load mmc 0:1 ${fdtaddr} am335x-boneblack.dtb
+        load mmc 0:1 ${fdtaddr} am335x-boneblack-audio-extension.dtb
+fi
 
 setenv bootargs console=ttyO0,115200n8 noinitrd root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait
 bootz ${loadaddr} - ${fdtaddr}
+
 EOF
 
 ${UBOOT_DIR}/tools/mkimage -C none -A arm -T script -d $ROOTFS/boot/boot.cmd $ROOTFS/boot/boot.scr
