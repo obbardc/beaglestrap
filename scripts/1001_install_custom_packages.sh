@@ -17,7 +17,7 @@ chroot_exec usermod -p "${ENCRYPTED_PASSWORD}" $USERNAME
 
 
 # copy in debs
-cp /home/chris/incoming/*.deb $ROOTFS/tmp/
+cp $INCOMING/*.deb $ROOTFS/tmp/
 
 # install mahalia-utils
 chroot_exec dpkg -i /tmp/mahalia-utils*.deb
