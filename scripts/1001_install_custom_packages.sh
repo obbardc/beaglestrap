@@ -4,7 +4,8 @@
 chroot_exec apt-get install sudo alsa-utils rt-tests psmisc --yes
 
 # install packages for wireless
-chroot_exec apt-get install firmware-ti-connectivity hostapd dnsmasq bluez --yes
+#chroot_exec apt-get install bluez --yes
+chroot_exec apt-get install firmware-ti-connectivity hostapd dnsmasq --yes
 
 # create user
 USERNAME="mha"
@@ -16,7 +17,7 @@ chroot_exec usermod -p "${ENCRYPTED_PASSWORD}" $USERNAME
 
 
 # copy in debs
-cp ~/incoming/*.deb $ROOTFS/tmp/
+cp /home/chris/incoming/*.deb $ROOTFS/tmp/
 
 # install mahalia-utils
 chroot_exec dpkg -i /tmp/mahalia-utils*.deb
