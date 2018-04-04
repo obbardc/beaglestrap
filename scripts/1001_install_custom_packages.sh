@@ -20,7 +20,7 @@ chroot_exec usermod -p "${ENCRYPTED_PASSWORD}" $USERNAME
 cp $INCOMING/*.deb $ROOTFS/tmp/
 
 # install mahalia-utils
-chroot_exec dpkg -i /tmp/mahalia-utils*.deb
+chroot_exec dpkg -i /tmp/mahalia-utils.deb
 chroot_exec apt-get install -f --yes
 
 # install jackd2
@@ -28,11 +28,11 @@ chroot_exec apt-get install -f --yes
 echo "jackd2	jackd/tweak_rt_limits	boolean	true" > $ROOTFS/tmp/debconf_selections.conf
 chroot_exec debconf-set-selections /tmp/debconf_selections.conf
 rm $ROOTFS/tmp/debconf_selections.conf
-chroot_exec dpkg -i /tmp/libjack-jackd2-0_*_armhf.deb
+chroot_exec dpkg -i /tmp/libjack-jackd2-0.deb
 chroot_exec apt-get install -f --yes
-chroot_exec dpkg -i /tmp/libjack-jackd2-dev_*_armhf.deb
+chroot_exec dpkg -i /tmp/libjack-jackd2-dev.deb
 chroot_exec apt-get install -f --yes
-chroot_exec dpkg -i /tmp/jackd2_*_armhf.deb
+chroot_exec dpkg -i /tmp/jackd2.deb
 
 # hold jackd2 (so it doesn't get over-written by apt)
 # dpkg: error: --set-selections takes no arguments ?!?!?!?
