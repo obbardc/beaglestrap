@@ -10,7 +10,7 @@
 
 CWD=`pwd`
 BUILDENV="$CWD/tmp"
-ROOTSIZE="1500"
+ROOTSIZE="500"
 BOOTSIZE="64"
 IMAGE="$CWD/out.img"
 ROOTFS="$BUILDENV/rootfs"
@@ -31,11 +31,6 @@ mkdir -p $BUILDENV
 # create blank image $ROOTSIZE blocks long
 info "creating blank image $IMAGE"
 dd if=/dev/zero of=$IMAGE bs=1MiB count=$ROOTSIZE >& /dev/null
-
-# install bootloader
-#info "installing bootloader"
-#dd conv=notrunc if=/home/chris/projects/oldenburg/u-boot/MLO of=$IMAGE count=1 seek=1 bs=128k >& /dev/null
-#dd conv=notrunc if=/home/chris/projects/oldenburg/u-boot/u-boot.img of=$IMAGE count=2 seek=1 bs=384k >& /dev/null
 
 # create partition table
 #

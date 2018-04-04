@@ -47,7 +47,9 @@ chroot_exec apt-get clean
 
 
 # setup wifi hotspot
-echo "auto wlan0
+echo "
+
+auto wlan0
 iface wlan0 inet static
   address 10.0.0.1
   netmask 255.255.255.0" >> $ROOTFS/etc/network/interfaces
