@@ -66,12 +66,14 @@ cat << EOF > $ROOTFS/etc/init.d/ssh_gen_host_keys
 # Short-Description: Generates new ssh host keys on first boot
 # Description:       Generates new ssh host keys on first boot
 ### END INIT INFO
+systemctl stop ssh
 ssh-keygen -f /etc/ssh/ssh_host_rsa_key -t rsa -N ""
 ssh-keygen -f /etc/ssh/ssh_host_dsa_key -t dsa -N ""
 insserv -r /etc/init.d/ssh_gen_host_keys
-service ssh start
 update-rc.d ssh defaults
+systemctl start ssh
 rm -f \$0
 EOF
 chmod a+x $ROOTFS/etc/init.d/ssh_gen_host_keys
-insserv $ROOTFS/etc/init.d/ssh_gen_host_keys
+#insserv $ROOTFS/etc/init.d/ssh_gen_host_keys
+update-rc.d ssh_gen_host_keys defaults
