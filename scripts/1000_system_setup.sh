@@ -69,9 +69,12 @@ cat << EOF > $ROOTFS/etc/init.d/ssh_gen_host_keys
 systemctl stop ssh
 ssh-keygen -f /etc/ssh/ssh_host_rsa_key -t rsa -N ""
 ssh-keygen -f /etc/ssh/ssh_host_dsa_key -t dsa -N ""
-insserv -r /etc/init.d/ssh_gen_host_keys
+update-rc.d ssh_gen_host_keys disable
+update-rc.d ssh_gen_host_keys remove
 update-rc.d ssh defaults
 systemctl start ssh
+
+# remove the script
 rm -f \$0
 EOF
 chmod a+x $ROOTFS/etc/init.d/ssh_gen_host_keys
