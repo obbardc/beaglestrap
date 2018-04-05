@@ -76,4 +76,4 @@ rm -f \$0
 EOF
 chmod a+x $ROOTFS/etc/init.d/ssh_gen_host_keys
 #insserv $ROOTFS/etc/init.d/ssh_gen_host_keys
-update-rc.d ssh_gen_host_keys defaults
+chroot_exec update-rc.d ssh_gen_host_keys defaults
