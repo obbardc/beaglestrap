@@ -39,14 +39,14 @@ chroot_exec dpkg -i /tmp/mahalia-utils.deb
 # install openMHA
 chroot_exec dpkg -i /tmp/libopenmha.deb
 chroot_exec dpkg -i /tmp/libopenmha-dev.deb
-chroot_exec dpkg -i /tmp/openmha-examples.deb
 chroot_exec dpkg -i /tmp/openmha.deb
+chroot_exec dpkg -i /tmp/openmha-examples.deb
 chroot_exec apt-get install -f --yes
 
 # hold jackd2 (so it doesn't get over-written by apt)
 # dpkg: error: --set-selections takes no arguments ?!?!?!?
 echo "jackd2 hold" | chroot_exec dpkg --set-selections
-echo "libjack-jackd2 hold" | chroot_exec dpkg --set-selections
+echo "libjack-jackd2-0 hold" | chroot_exec dpkg --set-selections
 echo "libjack-jackd2-dev hold" | chroot_exec dpkg --set-selections
 
 # cleanup apt
