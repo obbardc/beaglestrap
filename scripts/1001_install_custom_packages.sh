@@ -15,7 +15,6 @@ chroot_exec usermod -aG audio $USERNAME
 chroot_exec usermod -aG sudo $USERNAME
 chroot_exec usermod -p "${ENCRYPTED_PASSWORD}" $USERNAME
 
-
 # copy in debs
 cp $INCOMING/*.deb $ROOTFS/tmp/
 
@@ -26,8 +25,8 @@ chroot_exec debconf-set-selections /tmp/debconf_selections.conf
 rm $ROOTFS/tmp/debconf_selections.conf
 chroot_exec apt-get install --yes libsndfile1 pkg-config
 chroot_exec dpkg -i /tmp/libjack-jackd2-0.deb
-chroot_exec apt-get install -f --yes
-chroot_exec dpkg -i /tmp/libjack-jackd2-dev.deb
+#chroot_exec apt-get install -f --yes
+#chroot_exec dpkg -i /tmp/libjack-jackd2-dev.deb
 chroot_exec apt-get install -f --yes
 chroot_exec dpkg -i /tmp/jackd2.deb
 chroot_exec apt-get install -f --yes
@@ -37,7 +36,7 @@ chroot_exec dpkg -i /tmp/mahalia-utils.deb
 
 # install openMHA
 chroot_exec dpkg -i /tmp/libopenmha.deb
-chroot_exec dpkg -i /tmp/libopenmha-dev.deb
+#chroot_exec dpkg -i /tmp/libopenmha-dev.deb
 chroot_exec dpkg -i /tmp/openmha.deb
 chroot_exec dpkg -i /tmp/openmha-examples.deb
 chroot_exec apt-get install -f --yes
@@ -46,7 +45,7 @@ chroot_exec apt-get install -f --yes
 # dpkg: error: --set-selections takes no arguments ?!?!?!?
 echo "jackd2 hold" | chroot_exec dpkg --set-selections
 echo "libjack-jackd2-0 hold" | chroot_exec dpkg --set-selections
-echo "libjack-jackd2-dev hold" | chroot_exec dpkg --set-selections
+#echo "libjack-jackd2-dev hold" | chroot_exec dpkg --set-selections
 
 # cleanup apt
 rm $ROOTFS/tmp/*.deb
