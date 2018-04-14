@@ -30,8 +30,8 @@ allow-hotplug eth0
 iface eth0 inet dhcp" >> $ROOTFS/etc/network/interfaces
 
 # setup apt
-echo "deb http://ftp.uk.debian.org/debian stretch main contrib non-free
-deb-src http://ftp.uk.debian.org/debian stretch main contrib non-free" > $ROOTFS/etc/apt/sources.list
+echo "deb http://ftp.uk.debian.org/debian testing main contrib non-free
+deb-src http://ftp.uk.debian.org/debian testing main contrib non-free" > $ROOTFS/etc/apt/sources.list
 
 # do not install recommended packages
 echo "APT::Install-Recommends \"0\";
