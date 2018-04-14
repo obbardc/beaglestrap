@@ -24,15 +24,14 @@ cp $INCOMING/*.deb $ROOTFS/tmp/
 echo "jackd2	jackd/tweak_rt_limits	boolean	true" > $ROOTFS/tmp/debconf_selections.conf
 chroot_exec debconf-set-selections /tmp/debconf_selections.conf
 rm $ROOTFS/tmp/debconf_selections.conf
+chroot_exec apt-get install --yes libsndfile1 pkg-config
 chroot_exec dpkg -i /tmp/libjack-jackd2-0.deb
 chroot_exec apt-get install -f --yes
 chroot_exec dpkg -i /tmp/libjack-jackd2-dev.deb
 chroot_exec apt-get install -f --yes
 chroot_exec dpkg -i /tmp/jackd2.deb
+chroot_exec apt-get install -f --yes
 
-echo "--------"
-echo "Installing openMHA"
-echo "--------"
 # install mahalia-utils
 chroot_exec dpkg -i /tmp/mahalia-utils.deb
 
