@@ -9,7 +9,7 @@ chroot_exec apt-get install firmware-ti-connectivity hostapd dnsmasq --yes
 
 # create user
 USERNAME="mha"
-ENCRYPTED_PASSWORD=`mkpasswd -m sha-512 "mha"`
+ENCRYPTED_PASSWORD=`mkpasswd -m sha-512 "mahalia"`
 chroot_exec adduser --gecos $USERNAME --add_extra_groups --disabled-password $USERNAME
 chroot_exec usermod -aG audio $USERNAME
 chroot_exec usermod -aG sudo $USERNAME
