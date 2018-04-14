@@ -59,6 +59,3 @@ auto wlan0
 iface wlan0 inet static
   address 10.0.0.1
   netmask 255.255.255.0" >> $ROOTFS/etc/network/interfaces
-
-chroot_exec systemctl enable dnsmasq
-chroot_exec systemctl enable hostapd
