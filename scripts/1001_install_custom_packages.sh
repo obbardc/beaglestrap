@@ -1,7 +1,7 @@
 . ./functions.sh
 
 # install custom packages needed
-chroot_exec apt-get install sudo alsa-utils rt-tests psmisc --yes
+chroot_exec apt-get install sudo alsa-utils rt-tests psmisc acpid --yes
 
 # install packages for wireless
 #chroot_exec apt-get install bluez --yes
